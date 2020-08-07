@@ -1,0 +1,43 @@
+swagger: "2.0"
+info:
+  version: 0.0.0
+  title: API Configuração
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+tags:
+  - name: compomonents
+paths:
+  /:
+    post:
+      tags:
+      - compomonents
+      description: Get list of compomonents by repository name
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Object with name of repository"
+        required: true
+        schema:
+          $ref: "#/definitions/compomonentsListRequest"
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/componentObj"
+definitions:
+  compomonentsListRequest:
+    type: object
+    properties:
+      repository:
+        type: string
+  componentObj:
+    type: object
+    properties:
+      Title:
+        type: string

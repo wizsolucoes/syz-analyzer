@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <wiz-loading></wiz-loading>
+    <br />
+    <wiz-alert></wiz-alert>
+
+    <wiz-radio-group>
+      <wiz-radio
+        (returnevent)="useValue($event)"
+        disabled="false"
+        value="a"
+        name="a"
+      >
+      </wiz-radio>
+      <wiz-radio
+        (returnevent)="useValue($event)"
+        disabled="false"
+        value="b"
+        name="b"
+      >
+      </wiz-radio>
+      <wiz-radio
+        (returnevent)="useValue($event)"
+        disabled="false"
+        value="c"
+        name="c"
+      >
+      </wiz-radio>
+    </wiz-radio-group>
+  </body>
+</html>

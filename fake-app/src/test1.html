@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Title</h1>
+
+    <p id="unique-modal-trigger-id-md" class="btn btn-big">
+      [Clique aqui para abrir o modal]
+    </p>
+    <wiz-modal
+      size="md"
+      title-modal="Modal Title"
+      trigger-element-id="unique-modal-trigger-id-md"
+    >
+      <span slot="modal-body"
+        >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quia, quam?
+        Rem labore, autem excepturi obcaecati ab distinctio ad! Voluptatibus
+        neque enim voluptatem rem sit ab quisquam, facere tempore ad
+        perferendis?</span
+      >
+      <span slot="modal-footer">Conteúdo de footer</span>
+    </wiz-modal>
+
+    <p>Paragraph</p>
+  </body>
+</html>
