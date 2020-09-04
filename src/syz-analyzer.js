@@ -16,8 +16,15 @@ exports.runAnalysis = async function (appName, expectedCoverage, breakBuild, src
 
   printHeader();
   const expectedComponents = await fetchExpectedComponentsList(appName);
-  const coverage = await calculateCoverage(expectedComponents, srcPath);
-  publisher.publish(appName, coverage, onResultsPublished);
+  const { coverage, componentsFound, componentsNotFound } = await calculateCoverage(expectedComponents, srcPath);
+
+  publisher.publish(
+    appName,
+    coverage,
+    componentsFound,
+    componentsNotFound,
+    onResultsPublished
+  );
 }
 
 function printHeader() {
@@ -88,7 +95,12 @@ async function calculateCoverage(expectedComponents, srcPath)  {
   coverage = ((compareResult.found.length / expectedComponents.length) * 100).toFixed(2)
   
   console.log('INFO: SYZ Coverage:', coverage);
-  return coverage;
+
+  return {
+    coverage,
+    componentsFound: compareResult.found,
+    componentsNotFound: compareResult.notFound,
+  };
 }
 
 function onResultsPublished() {
@@ -102,6 +114,6 @@ function onResultsPublished() {
 function abortIfNoName(appName) {
   if (!appName) {
     console.log('ERROR: No app name provided. Aborting analysis.');
-    process.exit(1);
+    process.exit();
   }
 }
