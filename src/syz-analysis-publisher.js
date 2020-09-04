@@ -9,13 +9,23 @@ var tableSvc;
 var appId;
 var analysisValue;
 var callerCallBack;
+var componentsFoundList;
+var componentsNotFoundList;
 
 var exports = module.exports;
 
-exports.publish = function(appName, value, callBack) {
+exports.publish = function (
+  appName,
+  value,
+  componentsFound,
+  componentsNotFound,
+  callBack
+) {
   appId = appName;
   analysisValue = value;
-  callerCallBack = callBack
+  callerCallBack = callBack;
+  componentsFoundList = componentsFound;
+  componentsNotFoundList = componentsNotFound;
 
   if (!areAzureStorageParamsValid()) {
     callBack();
@@ -52,7 +62,9 @@ function onAppEntityInserted(error, result, response) {
   var analysisEntity = {
     PartitionKey: entGen.String(appId),
     RowKey: entGen.String(`${new Date().getTime()}`),
-    value: entGen.Double(analysisValue)
+    value: entGen.Double(analysisValue),
+    componentsFound: entGen.String(componentsFoundList.toString()),
+    componentsNotFound: entGen.String(componentsNotFoundList.toString()),
   };
 
   tableSvc.insertOrMergeEntity(tableName, analysisEntity, onAnalysisEntityInserted);
