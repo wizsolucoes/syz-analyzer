@@ -102,6 +102,6 @@ function onResultsPublished() {
 function abortIfNoName(appName) {
   if (!appName) {
     console.log('ERROR: No app name provided. Aborting analysis.');
-    process.exit(1);
+    process.exit();
   }
 }

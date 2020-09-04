@@ -7,7 +7,7 @@ var exports = module.exports;
 exports.fetch = async function (appId) {
   if (!baseUrl) {
     console.log('ERROR: Component service base url not provided. Aborting analysis.');
-    process.exit(1);
+    process.exit();
   }
 
   try {
@@ -20,7 +20,7 @@ exports.fetch = async function (appId) {
     return response.data.map(extractComponentName);
   } catch (error) {
     console.error('ERROR:', error);
-    process.exit(1);
+    process.exit();
   }
 }
 

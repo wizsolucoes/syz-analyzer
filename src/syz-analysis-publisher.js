@@ -66,7 +66,7 @@ function onAnalysisEntityInserted(error, result, response) {
 
 function handleError(error) {
   if (error) {
-    process.exit(1)
+    process.exit()
   }
 }
 
