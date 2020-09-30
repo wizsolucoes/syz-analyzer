@@ -20,7 +20,7 @@ exports.fetch = async function (appId) {
     return response.data.map(extractComponentName);
   } catch (error) {
     console.error('ERROR:', error);
-    process.exit();
+    process.exit(1);
   }
 }
 
