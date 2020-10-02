@@ -1,0 +1,1 @@
+process.env.SYZ_ANALYSIS_COMPONENT_SERVICE_URL = 'http://example.com/'
