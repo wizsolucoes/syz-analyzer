@@ -92,7 +92,7 @@ async function calculateCoverage(expectedComponents, srcPath)  {
   console.log('INFO: Found:', compareResult.found);
   console.log('INFO: Did not find:', compareResult.notFound);
 
-  coverage = ((compareResult.found.length / expectedComponents.length) * 100).toFixed(2)
+  const coverage = ((compareResult.found.length / expectedComponents.length) * 100).toFixed(2)
   
   console.log('INFO: SYZ Coverage:', coverage);
 
@@ -113,7 +113,7 @@ function onResultsPublished() {
 
 function abortIfNoName(appName) {
   if (!appName) {
-    console.log('ERROR: No app name provided. Aborting analysis.');
-    process.exit();
+    console.error('ERROR: No app name provided. Aborting analysis.');
+    process.exit(1);
   }
 }
