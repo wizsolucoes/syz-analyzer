@@ -6,7 +6,7 @@ var exports = module.exports;
 
 exports.fetch = async function (appId) {
   if (!baseUrl) {
-    console.log('ERROR: Component service base url not provided. Aborting analysis.');
+    console.error('ERROR: Component service base url not provided. Aborting analysis.');
     process.exit(1);
   }
 
@@ -17,7 +17,7 @@ exports.fetch = async function (appId) {
         repository: appId
       }
     );
-    return response.data.map(extractComponentName);
+    return response.data.filter(hasTitle).map(extractComponentName);
   } catch (error) {
     console.error('ERROR:', error);
     process.exit(1);
@@ -26,4 +26,8 @@ exports.fetch = async function (appId) {
 
 function extractComponentName(obj) {
   return obj['Title'].trim();
+}
+
+function hasTitle(obj) {
+  return !!obj['Title'];
 }
