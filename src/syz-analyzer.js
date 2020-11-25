@@ -10,12 +10,12 @@ var buildBreakerOptions = {
   isOn: undefined,
 };
 
-exports.runAnalysis = async function (appName, expectedCoverage, breakBuild, srcPath) {
+exports.runAnalysis = async function (appName, expectedCoverage, breakBuild, srcPath, components) {
   buildBreakerOptions.gateWay = expectedCoverage;
   buildBreakerOptions.isOn = breakBuild;
 
   printHeader();
-  const expectedComponents = await fetchExpectedComponentsList(appName);
+  const expectedComponents = await fetchExpectedComponentsList(appName, components);
   const { coverage, componentsFound, componentsNotFound } = await calculateCoverage(expectedComponents, srcPath);
 
   publisher.publish(
@@ -33,7 +33,7 @@ function printHeader() {
   console.log('============');
 }
 
-async function fetchExpectedComponentsList(appName) {
+async function fetchExpectedComponentsList(appName, components) {
   abortIfNoName(appName);
 
   console.log(`Fetching expected components list for ${appName}...`);
@@ -44,14 +44,20 @@ async function fetchExpectedComponentsList(appName) {
 
   console.log('\n');
 
-  if (expectedComponents.length == 0) {
-    console.log('INFO: This application is not expected to use SYZ components.');
+  let cliComponents = [];
+  if (components)
+    cliComponents = components.split(',');
+
+  if (expectedComponents.length === 0 && cliComponents.length === 0) {
+    console.log('INFO: This application is not expected to use any SYZ components.');
     process.exit();
   }
 
-  console.log('INFO: This application shoud use the following SYZ components', expectedComponents);
+  console.log('INFO: This application shoud use the following SYZ components');
+  console.log('\tFetched SYZ components', expectedComponents);
+  console.log('\tRequired SYZ components', cliComponents);
 
-  return expectedComponents;
+  return expectedComponents.concat(cliComponents);
 }
 
 function compare(componentsToBeUsed, componentsUsed) {

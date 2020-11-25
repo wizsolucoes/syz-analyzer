@@ -7,7 +7,8 @@ exports.parse =  function () {
     { name: 'app', alias: 'a', type: String },
     { name: 'src', alias: 's', type: String },
     { name: 'break-build', alias: 'b', type: Boolean },
-    { name: 'gateway', alias: 'g', type: Number }
+    { name: 'gateway', alias: 'g', type: Number },
+    { name: 'components', alias: 'c', type: String },
   ]
   
   const options = commandLineArgs(optionDefinitions)
@@ -16,8 +17,9 @@ exports.parse =  function () {
   const path = options.src  || 'src';
   const breakBuild = options['break-build'] || false;
   const gateway = options.gateway || 100;
+  const components = options.components || undefined;
   
-  return { app, gateway, breakBuild, path } 
+  return { app, gateway, breakBuild, path, components }; 
 }
 
 
