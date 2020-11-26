@@ -11,6 +11,7 @@ Ferramenta CLI para analisar adesão de uma aplicação ao design system SYZ.
   - [`--src`](#--src)
   - [`--gateway`](#--gateway)
   - [`--break-build`](#--break-build)
+  - [`--components`](#--components)
   - [Exemplo completo](#exemplo-completo)
 - [Variáveis de ambiente](#variáveis-de-ambiente)
 - [OpenAPI Specification do serviço de componentes](#openapi-specification-do-serviço-de-componentes)
@@ -72,9 +73,17 @@ Booleano que determina se o build de CI deve se quebrar quando o `gateway` de ad
 $ syz-analyzer --break-build
 ```
 
+### `--components`
+String para informar todos os componentes que são obrigatórios para todas as aplicações.
+Os componentes devem ser separados por vírgulas e sem espaços. **Default: empty**
+
+```sh
+$ syz-analyzer --components component1,component2,component3
+```
+
 ### Exemplo completo
 ```sh
-$ syz-analyzer --app speed-web --src projects/speed-web/src --gateway 70 --break-build
+$ syz-analyzer --app speed-web --src projects/speed-web/src --gateway 70 --break-build --components wiz-privacy
 ```
 
 ## Variáveis de ambiente
