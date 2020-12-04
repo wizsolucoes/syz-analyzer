@@ -109,7 +109,7 @@ async function calculateCoverage(expectedComponents, srcPath)  {
   };
 }
 
-function onResultsPublished() {
+function onResultsPublished(coverage) {
   if (buildBreakerOptions.isOn) {
     buildBreaker.run(coverage, buildBreakerOptions.gateWay);
   } else {
