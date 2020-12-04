@@ -28,7 +28,7 @@ exports.publish = function (
   componentsNotFoundList = componentsNotFound;
 
   if (!areAzureStorageParamsValid()) {
-    callBack();
+    callBack(analysisValue);
     return;
   }
 
@@ -73,7 +73,7 @@ function onAppEntityInserted(error, result, response) {
 function onAnalysisEntityInserted(error, result, response) {
   handleError(error)
   console.log('SUCCESS: Analysis results published.');
-  callerCallBack();
+  callerCallBack(analysisValue);
 }
 
 function handleError(error) {
