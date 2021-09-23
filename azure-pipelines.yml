@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-  batch: 'true'
+  batch: "true"
 
 resources:
   repositories:
@@ -15,6 +15,6 @@ resources:
 extends:
   template: main.yml@coretemplate
   parameters:
-    technology: 'node-package'
-    npmCustomEndpoint: 'npmjs'
-
+    technology: "node-package"
+    npmCustomEndpoint: "npmjs"
+    verbose: true
