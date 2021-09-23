@@ -17,6 +17,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@octokit/auth-token": "^2.5.0",
+    "@octokit/request": "^5.6.1",
     "axios": "^0.21.4",
     "azure-storage": "^2.10.4",
     "command-line-args": "^5.1.1",
