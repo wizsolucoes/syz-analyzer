@@ -10,13 +10,26 @@ var buildBreakerOptions = {
   isOn: undefined,
 };
 
-exports.runAnalysis = async function (appName, expectedCoverage, breakBuild, srcPath, components) {
+exports.runAnalysis = async function (
+  appName,
+  expectedCoverage,
+  breakBuild,
+  srcPath,
+  components
+) {
   buildBreakerOptions.gateWay = expectedCoverage;
   buildBreakerOptions.isOn = breakBuild;
 
   printHeader();
-  const expectedComponents = await fetchExpectedComponentsList(appName, components);
-  const { coverage, componentsFound, componentsNotFound } = await calculateCoverage(expectedComponents, srcPath);
+  const expectedComponents = await fetchExpectedComponentsList(
+    appName,
+    components
+  );
+  const {
+    coverage,
+    componentsFound,
+    componentsNotFound,
+  } = await calculateCoverage(expectedComponents, srcPath);
 
   publisher.publish(
     appName,
@@ -25,7 +38,7 @@ exports.runAnalysis = async function (appName, expectedCoverage, breakBuild, src
     componentsNotFound,
     onResultsPublished
   );
-}
+};
 
 function printHeader() {
   console.log('\n');
@@ -38,18 +51,19 @@ async function fetchExpectedComponentsList(appName, components) {
 
   console.log(`Fetching expected components list for ${appName}...`);
 
-  const data = await componentsListService.fetch(appName);
+  const data = await componentsListService.fetchByAppId(appName);
 
   var expectedComponents = data;
 
   console.log('\n');
 
   let cliComponents = [];
-  if (components)
-    cliComponents = components.split(',');
+  if (components) cliComponents = components.split(',');
 
   if (expectedComponents.length === 0 && cliComponents.length === 0) {
-    console.log('INFO: This application is not expected to use any SYZ components.');
+    console.log(
+      'INFO: This application is not expected to use any SYZ components.'
+    );
     process.exit();
   }
 
@@ -67,39 +81,49 @@ function compare(componentsToBeUsed, componentsUsed) {
   for (var i in componentsToBeUsed) {
     const component = componentsToBeUsed[i];
     const bucket = componentsUsed.includes(component) ? found : notFound;
-    bucket.push(component)
+    bucket.push(component);
   }
 
-  return { found, notFound }
+  return { found, notFound };
 }
 
-async function calculateCoverage(expectedComponents, srcPath)  {
+async function calculateCoverage(expectedComponents, srcPath) {
   console.log('\n');
   console.log(`Analysing HTML files in folder ./${srcPath}...`);
   console.log('\n');
 
-  var results = await finder.find({'term': "\<wiz-", 'flags': 'ig'}, srcPath, '.html$');
+  var results = await finder.find(
+    { term: '<wiz-', flags: 'ig' },
+    srcPath,
+    '.html$'
+  );
 
   const componentsFound = {};
 
   for (var result in results) {
-      var res = results[result];
+    var res = results[result];
 
-      for(var index in res.line) {
-        const componentName = res.line[index].match(/wiz-\w+-?\w+/ig)[0]
-        componentsFound[componentName] = true 
-      }
+    for (var index in res.line) {
+      const componentName = res.line[index].match(/wiz-\w+-?\w+/gi)[0];
+      componentsFound[componentName] = true;
+    }
   }
 
-  const compareResult = compare(expectedComponents, Object.keys(componentsFound))
+  const compareResult = compare(
+    expectedComponents,
+    Object.keys(componentsFound)
+  );
 
   console.log('Analysis result');
   console.log('---------------');
   console.log('INFO: Found:', compareResult.found);
   console.log('INFO: Did not find:', compareResult.notFound);
 
-  const coverage = ((compareResult.found.length / expectedComponents.length) * 100).toFixed(2)
-  
+  const coverage = (
+    (compareResult.found.length / expectedComponents.length) *
+    100
+  ).toFixed(2);
+
   console.log('INFO: SYZ Coverage:', coverage);
 
   return {
@@ -113,7 +137,7 @@ function onResultsPublished(coverage) {
   if (buildBreakerOptions.isOn) {
     buildBreaker.run(coverage, buildBreakerOptions.gateWay);
   } else {
-    console.log('INFO:', 'SYZ BuildBreaker: OFF')
+    console.log('INFO:', 'SYZ BuildBreaker: OFF');
   }
 }
 

@@ -9,39 +9,39 @@ describe('components list service', () => {
   });
 
   describe('fetch', () => {
-    it('returns list of tags', async ()  => {
+    it('returns list of tags', async () => {
       // Given
       const response = {
         data: [
           {
-            "Title": "wiz-alert"
+            Title: 'wiz-alert',
           },
           {
-            "Title": "wiz-tabs"
-          }
-        ]
+            Title: 'wiz-tabs',
+          },
+        ],
       };
 
       axios.post.mockImplementationOnce(() => Promise.resolve(response));
-  
+
       // When
       const list = await service.fetch('app-id');
 
       // Then
-      expect(list).toStrictEqual(["wiz-alert", "wiz-tabs"]);
+      expect(list).toStrictEqual(['wiz-alert', 'wiz-tabs']);
     });
 
-    it('trims white space from tags', async ()  => {
+    it('trims white space from tags', async () => {
       // Given
       const response = {
         data: [
           {
-            "Title": "wiz-alert       "
+            Title: 'wiz-alert       ',
           },
           {
-            "Title": "        wiz-tabs"
-          }
-        ]
+            Title: '        wiz-tabs',
+          },
+        ],
       };
 
       axios.post.mockImplementationOnce(() => Promise.resolve(response));
@@ -50,23 +50,23 @@ describe('components list service', () => {
       const list = await service.fetch('app-id');
 
       // Then
-      expect(list).toStrictEqual(["wiz-alert", "wiz-tabs"]);
+      expect(list).toStrictEqual(['wiz-alert', 'wiz-tabs']);
     });
 
-    it('filters out tags with out titles', async ()  => {
+    it('filters out tags with out titles', async () => {
       // Given
       const response = {
         data: [
           {
-            "Title": "wiz-alert"
+            Title: 'wiz-alert',
           },
           {
-            "Title": "wiz-tabs"
+            Title: 'wiz-tabs',
           },
           {
-            "OtherProp": "foo"
-          }
-        ]
+            OtherProp: 'foo',
+          },
+        ],
       };
 
       axios.post.mockImplementationOnce(() => Promise.resolve(response));
@@ -75,7 +75,7 @@ describe('components list service', () => {
       const list = await service.fetch('app-id');
 
       // Then
-      expect(list).toStrictEqual(["wiz-alert", "wiz-tabs"]);
+      expect(list).toStrictEqual(['wiz-alert', 'wiz-tabs']);
     });
   });
 });

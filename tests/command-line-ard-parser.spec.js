@@ -5,7 +5,13 @@ describe('command line args parser', () => {
     // Given
 
     // When
-    const { app, gateway, breakBuild, path, components } = commandLineArgsParser.parse();
+    const {
+      app,
+      gateway,
+      breakBuild,
+      path,
+      components,
+    } = commandLineArgsParser.parse();
 
     // Then
     expect(app).toBe(undefined);
@@ -13,7 +19,7 @@ describe('command line args parser', () => {
     expect(path).toBe('src');
     expect(breakBuild).toBe(false);
     expect(components).toBe(undefined);
-  })
+  });
 
   it('parses given values', () => {
     // Given
@@ -24,7 +30,13 @@ describe('command line args parser', () => {
     process.argv.push('--components=wiz-privacy');
 
     // When
-    const { app, gateway, breakBuild, path, components } = commandLineArgsParser.parse();
+    const {
+      app,
+      gateway,
+      breakBuild,
+      path,
+      components,
+    } = commandLineArgsParser.parse();
 
     // Then
     expect(app).toBe('my-app');
@@ -32,5 +44,5 @@ describe('command line args parser', () => {
     expect(path).toBe('src/app');
     expect(breakBuild).toBe(true);
     expect(components).toBe('wiz-privacy');
-  })
+  });
 });

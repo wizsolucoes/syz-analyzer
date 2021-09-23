@@ -32,13 +32,13 @@ exports.publish = function (
     return;
   }
 
-  printHeader ();
+  printHeader();
 
   tableSvc = azure.createTableService(storageAccount, storageAccessKey);
   tableSvc.createTableIfNotExists(tableName, onCreated);
-}
+};
 
-function onCreated(error, result, response){
+function onCreated(error, result, response) {
   handleError(error);
 
   console.log(`INFO: ${tableName} table created or already exists.`);
@@ -47,14 +47,14 @@ function onCreated(error, result, response){
   var appEntity = {
     PartitionKey: entGen.String(appId),
     RowKey: entGen.String('Application'),
-    lastAnalysisValue: entGen.Double(analysisValue)
+    lastAnalysisValue: entGen.Double(analysisValue),
   };
 
   tableSvc.insertOrMergeEntity(tableName, appEntity, onAppEntityInserted);
 }
 
 function onAppEntityInserted(error, result, response) {
-  handleError(error)
+  handleError(error);
 
   console.log(`INFO: App entity created or updated.`);
 
@@ -67,11 +67,15 @@ function onAppEntityInserted(error, result, response) {
     componentsNotFound: entGen.String(componentsNotFoundList.toString()),
   };
 
-  tableSvc.insertOrMergeEntity(tableName, analysisEntity, onAnalysisEntityInserted);
+  tableSvc.insertOrMergeEntity(
+    tableName,
+    analysisEntity,
+    onAnalysisEntityInserted
+  );
 }
 
 function onAnalysisEntityInserted(error, result, response) {
-  handleError(error)
+  handleError(error);
   console.log('SUCCESS: Analysis results published.');
   callerCallBack(analysisValue);
 }
@@ -79,11 +83,11 @@ function onAnalysisEntityInserted(error, result, response) {
 function handleError(error) {
   if (error) {
     console.error('ERROR:', error);
-    process.exit(1)
+    process.exit(1);
   }
 }
 
-function printHeader () {
+function printHeader() {
   console.log('\n');
   console.log('SYZ Analysis Publisher');
   console.log('======================');
@@ -96,17 +100,23 @@ function areAzureStorageParamsValid() {
   }
 
   if (!tableName) {
-    console.log('INFO: No Azure Storage Account Table name found. Aborting publishing analysis.');
+    console.log(
+      'INFO: No Azure Storage Account Table name found. Aborting publishing analysis.'
+    );
     return false;
   }
 
   if (!storageAccount) {
-    console.log('INFO: No Azure Storage Account name found. Aborting publishing analysis.');
+    console.log(
+      'INFO: No Azure Storage Account name found. Aborting publishing analysis.'
+    );
     return false;
   }
 
   if (!storageAccessKey) {
-    console.log('INFO: No Azure Storage Table access key found. Aborting publishing analysis.');
+    console.log(
+      'INFO: No Azure Storage Table access key found. Aborting publishing analysis.'
+    );
     return false;
   }
 
