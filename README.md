@@ -9,12 +9,10 @@ Ferramenta CLI para analisar adesão de uma aplicação ao design system SYZ.
 - [Parâmetros](#parâmetros)
   - [`--app`](#--app)
   - [`--src`](#--src)
-  - [`--gateway`](#--gateway)
   - [`--break-build`](#--break-build)
   - [`--components`](#--components)
   - [Exemplo completo](#exemplo-completo)
 - [Variáveis de ambiente](#variáveis-de-ambiente)
-- [OpenAPI Specification do serviço de componentes](#openapi-specification-do-serviço-de-componentes)
 
 ## Uso
 ```bash
@@ -26,6 +24,8 @@ syz-analyzer
 ```
 
 ## Desenvolvimento, por onde começar
+Primeiramente, seta os [variáveis de ambiente necessários](#variáveis-de-ambiente) para rodar o programa.
+
 ```bash
 # Install
 npm install
@@ -33,20 +33,20 @@ npm install
 # Run tests
 npm test
 
-# Run
-npm start
+# Run (Exemplo com argumentos)
+npm run start --  --app anyname-web --src fake-app/src --break-build --components wiz-privacy,wiz-xpto
 ```
 
 ## Como funciona
 A analisador segue os seguintes passos:
-1. Busca uma lista dos components do SYZ esperados para a aplicação sob análise,
+1. Busca a lista dos componentes do SYZ,
 2. Procura por tags html que correspondem aos componentes SYZ,
-3. Publica a porcentagem dos components do SYZ esperados que foram encontrados para um repostório de dados,
-4. Opcionalmente termina seu processo com código de erro se a porcentagem estiver abaixo de um threshold especificado, o que provocaria a quebra do build em um pipeline de CI. 
+3. Publica a quais componentes foram encontrados para um repositório de dados,
+4. Opcionalmente, termina seu processo com código de erro se a porcentagem estiver abaixo de um threshold especificado, o que provocaria a quebra do build em um pipeline de CI. 
 
 ## Parâmetros
 ### `--app` 
-**(Required)** Nome do respositório da aplicação a ser analisada.
+**(Required)** Nome do repositório da aplicação a ser analisada.
 
 ```sh
 $ syz-analyzer --app speed-web
@@ -57,13 +57,6 @@ Caminho para a pasta do código fonte a ser analisado. **Default: "src"**
 
 ```sh
 $ syz-analyzer --src projects/speed-web/src
-```
-
-### `--gateway`
-Porcentagem dos components do SYZ esperados que devem ser encontrados nos arquivos html para evitar a quebra do build. **Default: 100**
-
-```sh
-$ syz-analyzer --gateway 70
 ```
 
 ### `--break-build`
@@ -83,7 +76,7 @@ $ syz-analyzer --components component1,component2,component3
 
 ### Exemplo completo
 ```sh
-$ syz-analyzer --app speed-web --src projects/speed-web/src --gateway 70 --break-build --components wiz-privacy
+$ syz-analyzer --app speed-web --src projects/speed-web/src --break-build --components wiz-privacy
 ```
 
 ## Variáveis de ambiente
@@ -95,75 +88,4 @@ Você deve prover a url base para o serviço que vá buscar a lista de component
 
 `SYZ_ANALYSIS_STORAGE_TABLE` - Nome da tabela da conta de storage.
 
-`SYZ_ANALYSIS_COMPONENT_SERVICE_URL` - URL base para o serviço que vá buscar a lista de componentes esperados.
-
-## OpenAPI Specification do serviço de componentes
-
-<!-- omit in toc -->
-### /
-<!-- omit in toc -->
-#### POST
-<!-- omit in toc -->
-##### Description
-
-Get list of components by repository name
-<!-- omit in toc -->
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| body | body | Object with name of repository | Yes | [componentsListRequest](#componentslistrequest) |
-
-Example value
-```json
-{
-  "repository": "speed-web"
-}
-```
-<!-- omit in toc -->
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | OK | [ [componentObj](#componentobj) ] |
-
-Example value
-```json
-[
-  {
-    "Title": "wiz-alert"
-  },
-  {
-    "Title": "wiz-tabs"
-  }
-]
-
-```
-<!-- omit in toc -->
-### Models
-<!-- omit in toc -->
-#### componentsListRequest
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| repository | string |  | No |
-
-Example value
-```json
-{
-  "repository": "speed-web"
-}
-```
-<!-- omit in toc -->
-#### componentObj
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| Title | string |  | No |
-
-Example value
-```json
-{
-  "Title": "wiz-alert"
-}
-```
+`GITHUB_PERSONAL_ACCESS_TOKEN` - Token para fazer uso da API do GitHub

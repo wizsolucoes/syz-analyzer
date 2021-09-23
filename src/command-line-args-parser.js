@@ -16,8 +16,7 @@ exports.parse = function () {
   const app = options.app;
   const path = options.src || 'src';
   const breakBuild = options['break-build'] || false;
-  const gateway = options.gateway || 100;
   const components = options.components || undefined;
 
-  return { app, gateway, breakBuild, path, components };
+  return { app, breakBuild, path, components };
 };
