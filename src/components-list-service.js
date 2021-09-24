@@ -1,33 +1,61 @@
-const axios = require('axios').default;
+const { createTokenAuth } = require('@octokit/auth-token');
+const { request } = require('@octokit/request');
 
-var baseUrl = process.env.SYZ_ANALYSIS_COMPONENT_SERVICE_URL;
+const github_pat = process.env.GITHUB_PERSONAL_ACCESS_TOKEN;
 
 var exports = module.exports;
 
-exports.fetch = async function (appId) {
-  if (!baseUrl) {
-    console.error('ERROR: Component service base url not provided. Aborting analysis.');
-    process.exit(1);
-  }
+exports.fetchAll = async function () {
+  const auth = createTokenAuth(github_pat);
+
+  const requestWithAuth = request.defaults({
+    request: {
+      hook: auth.hook,
+    },
+  });
+
+  const route = 'GET /repos/{owner}/{repo}/contents/{path}';
+  const repo = 'syz';
+  const owner = 'wizsolucoes';
+  let ngSyzComponents = [];
+  let wizComponents = [];
 
   try {
-    const response = await axios.post(
-      baseUrl,
-      {
-        repository: appId
-      }
-    );
-    return response.data.filter(hasTitle).map(extractComponentName);
+    const result = await requestWithAuth(route, {
+      owner,
+      repo,
+      path: 'packages/ng-syz/projects/ng-syz/src/lib',
+    });
+    ngSyzComponents = result.data.map(prefixNameWithNgSyz).filter(isDirectory);
   } catch (error) {
     console.error('ERROR:', error);
     process.exit(1);
   }
+
+  try {
+    const result = await requestWithAuth(route, {
+      owner,
+      repo,
+      path: 'packages/components',
+    });
+    wizComponents = result.data.map(removeWcPrefix).filter(isDirectory);
+  } catch (error) {
+    console.error('ERROR:', error);
+    process.exit(1);
+  }
+
+  return [...ngSyzComponents, ...wizComponents];
+};
+
+function prefixNameWithNgSyz(obj) {
+  return 'ng-syz-' + obj.name;
 }
 
-function extractComponentName(obj) {
-  return obj['Title'].trim();
+function removeWcPrefix(obj) {
+  const prefix = 'wc-';
+  return obj.name.slice(prefix.length, obj.name.length);
 }
 
-function hasTitle(obj) {
-  return !!obj['Title'];
+function isDirectory(obj) {
+  return obj.indexOf('.') === -1;
 }

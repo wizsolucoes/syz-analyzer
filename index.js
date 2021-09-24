@@ -2,6 +2,6 @@
 const syzAnalyzer = require('./src/syz-analyzer');
 const commandLineArgsParser = require('./src/command-line-args-parser');
 
-const { app, gateway, breakBuild, path, components } = commandLineArgsParser.parse();
+const { app, breakBuild, path, components } = commandLineArgsParser.parse();
 
-syzAnalyzer.runAnalysis(app, gateway, breakBuild, path, components);
+syzAnalyzer.runAnalysis(app, breakBuild, path, components);
