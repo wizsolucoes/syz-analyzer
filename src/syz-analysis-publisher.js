@@ -66,6 +66,8 @@ function onAppEntityInserted(error, result, response) {
 function onAnalysisEntityInserted(error, result, response) {
   handleError(error);
   console.log('SUCCESS: Analysis results published.');
+  console.log('===================================');
+  console.log('\n');
   callerCallBack();
 }
 

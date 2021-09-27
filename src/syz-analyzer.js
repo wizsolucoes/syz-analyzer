@@ -26,7 +26,11 @@ exports.runAnalysis = async function (
 
   abortIfNoName(appName);
 
+  console.log('Buscando lista de componentes do SYZ...');
+
   const allComponents = await componentsListService.fetchAll();
+
+  console.log('Componentes do SYZ', allComponents);
 
   componentsFound = await findComponents(srcPath, allComponents);
 

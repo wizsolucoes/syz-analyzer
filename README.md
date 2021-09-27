@@ -33,7 +33,8 @@ npm install
 # Run tests
 npm test
 
-# Run (Exemplo com argumentos)
+# Run (Exemplo)
+# O codígo fonte tem uma pasta chamada 'fake-app' que pode ser usado para testar o funcionamento da ferrmenta.
 npm run start --  --app anyname-web --src fake-app/src --break-build --components wiz-privacy,wiz-xpto
 ```
 
