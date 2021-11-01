@@ -4,7 +4,10 @@
 # https://aka.ms/yaml
 
 trigger:
-  batch: "true"
+  batch: 'true'
+
+pool:
+  vmImage: 'ubuntu-latest'
 
 resources:
   repositories:
@@ -15,6 +18,6 @@ resources:
 extends:
   template: main.yml@coretemplate
   parameters:
-    technology: "node-package"
-    npmCustomEndpoint: "npmjs"
+    technology: 'node-package'
+    npmCustomEndpoint: 'npmjs'
     verbose: true
