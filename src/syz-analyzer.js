@@ -49,7 +49,7 @@ async function findComponents(srcPath, validComponents) {
   console.log('\n');
 
   var searchResults = await finder.find(
-    { term: '(<wiz-|<ng-syz-)', flags: 'ig' },
+    { term: '(<wiz-|<ng-syz-|<mat-)', flags: 'ig' },
     srcPath,
     '.html$'
   );
